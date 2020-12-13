@@ -29,6 +29,12 @@ public class MainPageObject
     {
         WebElement element = waitForElementPresent(locator, errorMessage, timeoutInSeconds);
         if (element.isDisplayed() && element.isEnabled()) {
+            /* Wait 1s to stabilize click of animated elements */
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             element.click();
         }
 
@@ -50,12 +56,13 @@ public class MainPageObject
         String byType = explodedLocator[0];
         String locator = explodedLocator[1];
 
-        switch (byType) {
-            case "xpath": return By.xpath(locator);
-            case "id": return By.id(locator);
-            case "css": return By.cssSelector(locator);
-            default:
-                throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locatorWithType);
+        if ("xpath".equals(byType)) {
+            return By.xpath(locator);
+        } else if ("id".equals(byType)) {
+            return By.id(locator);
+        } else if ("css".equals(byType)) {
+            return By.cssSelector(locator);
         }
+        throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locatorWithType);
     }
 }
