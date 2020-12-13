@@ -18,11 +18,11 @@ public class AddItemToCartTest extends BrowserChrome
         CartPageObject cartPageObject = new CartPageObject(driver);
 
         hamburgerMenuPageObject.openHamburgerMenu();
-        hamburgerMenuPageObject.selectSection("Electronics");
-        hamburgerMenuPageObject.selectSection("Computers and Accessories");
+        hamburgerMenuPageObject.selectMenuSection("Electronics");
+        hamburgerMenuPageObject.selectMenuSection("Computers and Accessories");
 
-        itemsListPageObject.findItem("3");
-        itemsListPageObject.openItemDetails("3");
+        itemsListPageObject.findItem(3);
+        itemsListPageObject.openItemDetails(3);
 
         itemInfoPageObject.storeItemPrice();
         itemInfoPageObject.clickAddToCart();

@@ -23,7 +23,7 @@ public class HamburgerMenuPageObject extends MainPageObject
         );
     }
 
-    public void selectSection(String section)
+    public void selectMenuSection(String section)
     {
         if (section.equals("Electronics")) {
             this.waitForElementAndClick(

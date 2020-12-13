@@ -13,29 +13,37 @@ public class ItemsListPageObject extends MainPageObject
         super(driver);
     }
 
-    private static String getItemOrderNumber(String orderNumber)
+    private static String getItemByOrderNumber(int orderNumber)
     {
         return String.format(ITEM, orderNumber);
     }
 
-    private static String getItemLinkOrderNumber(String orderNumber)
+    private static String getItemLinkByOrderNumber(int orderNumber)
     {
         return String.format(ITEM_LINK, orderNumber);
     }
 
-    public void findItem(String orderNumber)
+    /**
+     * Order number starts from 0
+     * @param orderNumber
+     */
+    public void findItem(int orderNumber)
     {
         this.waitForElementPresent(
-                getItemOrderNumber(orderNumber),
+                getItemByOrderNumber(orderNumber),
                 "Cannot select item " + orderNumber + " from the list",
                 15
         );
     }
 
-    public void openItemDetails(String orderNumber)
+    /**
+     * Order number starts from 0
+     * @param orderNumber
+     */
+    public void openItemDetails(int orderNumber)
     {
         this.waitForElementAndClick(
-                getItemLinkOrderNumber(orderNumber),
+                getItemLinkByOrderNumber(orderNumber),
                 "Cannot click on item's link",
                 5
         );

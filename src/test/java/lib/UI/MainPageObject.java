@@ -17,17 +17,17 @@ public class MainPageObject
         this.driver = driver;
     }
 
-    public WebElement waitForElementPresent(String locator, String error_message, long timeoutInSeconds)
+    public WebElement waitForElementPresent(String locator, String errorMessage, long timeoutInSeconds)
     {
         By by = this.getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_message + "\n");
-        return wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(ExpectedConditions.elementToBeClickable(by));
     }
 
-    public WebElement waitForElementAndClick(String locator, String error_message, long timeoutInSeconds)
+    public WebElement waitForElementAndClick(String locator, String errorMessage, long timeoutInSeconds)
     {
-        WebElement element = waitForElementPresent(locator, error_message, timeoutInSeconds);
+        WebElement element = waitForElementPresent(locator, errorMessage, timeoutInSeconds);
         if (element.isDisplayed() && element.isEnabled()) {
             element.click();
         }
@@ -38,25 +38,24 @@ public class MainPageObject
     public double getDoubleFromText(String locator)
     {
         By by = this.getLocatorByString(locator);
-        String el = driver.findElement(by).getText();
+        String text = driver.findElement(by).getText();
 
-        return Double.parseDouble(el.replaceAll("[^0-9.]", ""));
+        /* Method deletes everything from string except from numbers and dot */
+        return Double.parseDouble(text.replaceAll("[^0-9.]", ""));
     }
 
-    private By getLocatorByString(String locator_with_type)
+    private By getLocatorByString(String locatorWithType)
     {
-        String[] exploded_locator = locator_with_type.split(Pattern.quote(":"), 2);
-        String by_type = exploded_locator[0];
-        String locator = exploded_locator[1];
+        String[] explodedLocator = locatorWithType.split(Pattern.quote(":"), 2);
+        String byType = explodedLocator[0];
+        String locator = explodedLocator[1];
 
-        if (by_type.equals("xpath")) {
-            return By.xpath(locator);
-        } else if (by_type.equals("id")) {
-            return By.id(locator);
-        }  else if (by_type.equals("css")) {
-            return By.cssSelector(locator);
-        } else {
-            throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locator_with_type);
+        switch (byType) {
+            case "xpath": return By.xpath(locator);
+            case "id": return By.id(locator);
+            case "css": return By.cssSelector(locator);
+            default:
+                throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locatorWithType);
         }
     }
 }
